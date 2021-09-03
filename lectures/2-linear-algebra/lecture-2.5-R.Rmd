@@ -1,0 +1,357 @@
+---
+title: "Math Camp: Lesson 2.5"
+subtitle: "Introduction to R"
+author: "UW--Madison Political Science"
+date: "August 18, 2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    #mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: center, middle
+
+# What is R?
+
+```{r xaringan-themer, include = FALSE}
+# setup
+library("here")
+source(here("R/setup-lectures.R"))
+```
+
+---
+
+# R is...
+
+--
+
+- a programming language and software environment for statistical computing and graphics
+- open source (free!)
+- based on the popular C programming language
+
+---
+
+# R in political science research
+
+--
+
+- R graphics are often featured in research in the top political science journals
+- Check out Kastellec and Leoni's 2007 *Perspectives on Politics* article, [Using Graphs Instead of Tables in Political Science](https://scholar.princeton.edu/sites/default/files/jkastellec/files/graphs.pdf)
+
+
+---
+
+# Getting Started
+
+--
+  
+- Download [R](https://cran.r-project.org/mirrors.html) (engine): pick the CRAN mirror closest to you!
+- Download [RStudio](https://rstudio.com/products/rstudio/download/) (car): download the free version!
+- Open RStudio
+- Create New Folder called `sample-folder`
+- Go to File -> New File -> R Script
+- File -> Save As -> save in `sample-folder`
+
+---
+
+# Tips
+
+--
+  
+- Attempt to write the code first before you give up and ask for help
+- Google is your friend! You'll get better at Googling your R questions over time
+- Work with your classmates
+- Know that learning R is much more about building confidence than it is about being super good at statistics
+
+---
+  
+# Set Working Directory
+
+- Copy folder path
+- When you use the `here` package, you won't have to worry about this step but for the sake of this demo, showing you this manually could help
+
+--
+  
+- In MacOS
+
+`setwd("/Users/marcyshieh/Desktop/sample-folder")`
+
+--
+  
+- In Windows
+
+`setwd("C:/Users/marcyshieh/Desktop/sample-folder")`
+
+---
+
+## Use R as a Calculator
+--
+
+- `1+3`
+- `5-3`
+- `2*2`
+- `9/9`
+- `2^2`
+- `sqrt(4)`
+
+---
+  
+## Creating Objects in R
+  
+What does it mean to create an object in R?
+  
+--
+
+You are basically putting stuff in a box, then labeling the box.
+
+--
+
+- You want to put 1 + 3 into an object called "four"
+  
+`four <- 1+3`
+
+--
+
+- Now when you want to perform a function on "four," you will be referring to 1 + 3
+
+`sqrt(four)`
+
+--
+
+- You want to put the word "hi" into an object called "hello"
+
+`hello <- "hi"`
+
+--
+
+- You can overwrite objects
+
+- Here, you are taking out the word "hi" from the "hello" object and replacing it with "hi, nice to meet you"
+
+--
+
+`hello <- "hi, nice to meet you"`
+---
+
+# Create Data Frame
+
+--
+
+A data frame is essentially a table.
+
+--
+
+- Create a column called "streaming"
+
+`streaming <- c("Netflix", "Hulu", "Amazon Prime")`
+
+--
+
+- Create a column called "approve"
+
+`approve <- c(50, 30, 15)`
+
+--
+
+- Create a columnn named "disapprove"
+
+`disapprove <- c(50, 70, 85)`
+
+--
+
+- Put all the columns together to create one table
+
+`streaming_dataframe <- data.frame(streaming, approve, disapprove)`
+
+--
+
+- Then you can take a look at the table that you created!
+
+`streaming_dataframe`
+
+---
+
+# Summarize the Data Frame 
+
+--
+- Calculate the mean for the "approve" column
+
+`mean(streaming_dataframe$approve)`
+
+--
+
+- Calculate the mean for the "disapprove" column
+
+`mean(streaming_dataframe$disapprove)`
+
+--
+
+- Subtract the means in the approve and disapprove columns
+
+`mean(streaming_dataframe$approve) - mean(streaming_dataframe$disapprove)`
+
+---
+
+# Summarize the Data Frame (cont)
+
+--
+
+- Find the absolute value from subtracting the approve and disapprove columns
+
+`abs(mean(streaming_dataframe$approve) - mean(streaming_dataframe$disapprove))`
+
+--
+
+- Find the median of the approve column
+
+`median(streaming_dataframe$approve)`
+
+--
+
+- Look at the summary statistics for the entire table
+
+`summary(streaming_dataframe)`
+
+---
+
+# Count rows and columns
+
+- Count the number of rows
+
+`nrow(streaming_dataframe)`
+
+--
+
+- Count the number of variables
+
+`ncol(streaming_dataframe)`
+
+--
+
+-  Count rows and columns
+
+`dim(streaming_dataframe)`
+
+---
+
+class: middle, center
+
+### Any questions?
+
+---
+
+# Write & Read CSV Files
+
+--
+- Write csv file into folder
+
+`write.csv(streaming_dataframe, "streaming_dataframe.csv")`
+--
+
+- Open up your streaming_dataframe.csv file and rename the "approve" column (in Excel or a text editor) into "approve2"
+
+`streaming_dataframe_v2 <- read.csv("streaming_dataframe.csv")`
+
+--
+- Find the mean for each column one by one
+
+`mean(streaming_dataframe_v2$approve2)`
+`mean(streaming_dataframe_v2$disapprove)`
+
+--
+- Or find "summary" statistics info for all the columns
+
+`summary(streaming_dataframe_v2)`
+---
+
+# Graphs
+
+- Create a graph for approval
+
+`barplot(streaming_dataframe_v2$approve, xlab="Streaming", ylab="Approval Rating", names.arg=c("Netflix", "Hulu", "Amazon Prime"))`
+
+- Create a graph for disapproval
+
+`barplot(streaming_dataframe_v2$disapprove, xlab="Streaming", ylab="Disapproval Rating", names.arg=c("Netflix", "Hulu", "Amazon Prime"))`
+---
+
+# Install Packages
+
+- Install the package once
+
+`install.packages("ggplot2")`
+
+- Access the package in your current environment
+
+`library("ggplot2")`
+
+---
+
+# Create graph in ggplot2
+
+- Create graph
+
+`streaming_graph<-ggplot(data=streaming_dataframe_v2, aes(x=streaming, y=approve)) + geom_bar(stat="identity")`
+
+- Load graph
+  
+`streaming_graph`
+
+- Add color to the graph
+
+`streaming_graph_blue<-ggplot(data=streaming_dataframe_v2, aes(x=streaming, y=approve)) + geom_bar(stat="identity", fill="steelblue")`
+
+- Load graph with color
+
+`streaming_graph_blue`
+
+---
+
+# Knit a practice R Markdown file!
+
+--
+  
+1. Download [LaTeX](https://www.latex-project.org/get/).
+2. Go to RStudio.
+3. Go to File > R Markdown
+4. The "New to R Markdown" window will come up.
+5. Enter a title for your file (e.g., Practice R Markdown Document).
+6. Select PDF as the output format.
+7. Save As "practice.Rmd".
+8. Click "Knit".
+9. Compare the PDF to the Rmd file.
+10. Check out the [R Markdown Cheatsheet](https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf).
+
+---
+
+# Final Takeaways
+
+--
+  
+- Coding is all about building confidence
+- Don't be discouraged
+- Don't be afraid to ask for help
+- Rely on Google! Use it like it's a friend!
+- [swirl](https://swirlstats.com/) is a good resource for learning R
+
+---
+
+class: center, middle
+
+# Let's call it a day
+
+Homework is online
+
+https://github.com/shirikov/math-camp-2020
+
+```{css, echo=FALSE}
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```

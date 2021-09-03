@@ -1,0 +1,892 @@
+---
+title: "Math Camp Lesson 3 (Day 2)"
+subtitle: "Calculus"
+author: "UW--Madison Political Science"
+date: "September 2, 2021"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    #mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-themer, include = FALSE}
+library("here")
+source(here("R/setup-lectures.R"))
+```
+
+
+## Recap from Calculus Day 1
+
+- Derivatives allow us to evaluate the rate of change of functions.
+
+- The derivative of a function tells us how its output changes as the value of its input changes.
+
+- It is the instantaneous slope of the line at any given point.
+
+- Can be written as $\frac{d[f(x)]}{dx}$, $\frac{d}{dx}[f(x)]$, $f'(x)$ (this is the notation we're using)
+
+- Derivatives can be calculated by taking limits as functions approach particular points. But usually we do this by applying a series of rules:
+  
+  + Power rule, product rule, quotient rule, chain rule...
+
+---
+
+## Agenda for today
+
+- Second derivatives
+
+- Optimization
+
+- Partial derivatives
+
+- Integrals
+
+---
+
+
+## Second derivatives
+
+Sometimes, e.g., for optimization (more in a bit), you may need to know the derivative of the derivative—how the rate of change itself is changing.
+
+--
+
+These are known as second derivatives, denoted $\frac{d^2[f(x)]}{dx^2}$ or $f''(x)$.
+
+--
+
+Consider $f(x) = 5x^3 +8x^2 +2x+4$. What are its first and second derivatives?
+
+--
+
+
+\begin{align}
+f'(x) = 15x^2 + 16x + 2
+\end{align}
+
+--
+
+\begin{align}
+f''(x) = 30x + 16
+\end{align}
+
+--
+
+Higher order (third, fourth, etc.) derivatives also exist, but they are rarely relevant.
+
+---
+
+## First and second derivatives visually
+
+```{r, echo=FALSE, cache = TRUE, out.width = "70%"}
+df <- data.frame(x = seq(-100, 100, by= 0.5))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 5*x^3 +8*x^2 +2*x+4, colour = "black", size = 1.4) + 
+stat_function(fun = function(x) 15*x^2 +16*x +2, colour = "blue", 
+              linetype = "dotted",
+              size = 1.4) + 
+stat_function(fun = function(x) 30*x +16, colour = "red", 
+              linetype = "dotted", size = 1.4) + 
+  theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "gray")+
+geom_vline(xintercept = 0, colour = "gray")+
+xlim(-10,10) +
+  ylim(-500,500) +
+  geom_text(aes(-0.5, -480, label = (paste(expression("f(x) = 5x"^3+"8x"^2+"2x"+4)))),
+            parse = TRUE, size = 6) +
+  geom_text(aes(-6, 500, label = (paste(expression("f'(x) = 15x"^2+"16x"+2)))),
+            parse = TRUE, color = "blue", size = 6) +
+  geom_text(aes(-8, -315, label = (paste(expression("f''(x) = 30x"+16)))),
+            parse = TRUE, color = "red", size = 6) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+
+---
+
+## Concavity and convexity
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE, out.width= '\\textwidth', out.height= "\\textheight"}
+df <- data.frame(x = seq(-2, 1, by= 0.5))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 5*x^3 +8*x^2 +2*x+4, colour = "black",
+              size = 1.4)+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+ylim(-10,20) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Concavity Theorem: If the function $f(x)$ is twice differentiable at $x=c$, then the graph of $f(x)$ is convex at $(x,f(x))=(c,f(c))$ if $f''(c) > 0$ and concave if $f''(c) < 0$.
+
+The function to the left is $f(x) = 5x^3 +8x^2 +2x+4$ and its second derivative is $f''(x) = 30x + 16$. 
+
+When is it convex? When is it concave? 
+]
+
+---
+
+## Concavity and convexity
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE, out.width= '\\textwidth', out.height= "\\textheight"}
+df <- data.frame(x = seq(-2, 1, by= 0.5))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 5*x^3 +8*x^2 +2*x+4, colour = "black",
+              size = 1.4) + 
+  stat_function(fun = function(x) 30*x +16, colour = "red", linetype = "dotted",
+              size = 1.4) + theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+  ylim(-10,20) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Concavity Theorem: If the function $f(x)$ is twice differentiable at $x=c$, then the graph of $f(x)$ is convex at $(x,f(x))=(c,f(c))$ if $f''(c) > 0$ and concave if $f''(c) < 0$.
+
+The function to the left is $f(x) = 5x^3 +8x^2 +2x+4$ and its second derivative is $f''(x) = 30x + 16$. 
+
+It is convex when $x \in \left(-\frac{16}{30},\infty\right)$ and concave when $x \in \left(-\infty,-\frac{16}{30}\right)$. $x =-\frac{16}{30}$ is an *inflection point*.
+]
+
+
+---
+
+
+## Second derivatives: exercises
+
+Find the first and second derivative of the expressions below:
+
+$f(x) = 16x^3 −3x^2 +6$
+
+$g(x) = x-x^2$
+
+$h(x) = 4x^{-1} + 5x^{\frac{7}{2}}$
+
+---
+
+## Optimization (maximization or minimization)
+
+In social science and in statistics, we often want to find the maximum or minimum of a function. Consider an example from a paper by [Carroll et al. 2013](https://scholar.princeton.edu/sites/default/files/jameslo/files/ajps_utility.pdf): 
+
+Let's say $U_{ij} = \beta (-\frac{1}{2} w^2 (X_i - O_j)^2) + \epsilon_{ij}$ is the utility that legislator $i$ derives from supporting bill $j$. The utility is the output, and inputs are $X_i$ (legislator's ideal point), $O_j$ (how far the bill is from the ideal point), and other parameters $(\beta$, $w$, $\epsilon)$.
+
+We may want to know when the utility is maximized given the inputs—that is, under what parameters it is most beneficial for the legislator to support the policy.
+
+---
+
+## Optimization (maximization or minimization)
+
+Or consider another situation:
+
+We flip a coin $n = 5$ times and get $y = 4$ heads. What's the probability of getting heads (let's call it $\pi$)?
+
+Probability mass function for a binomial outcome $(n$ independent trials, $y$ successes, success probability $\pi)$: $\mathrm{Pr}\left( y = k \mid \pi \right) = {n \choose k} \pi^{k}(1 - \pi)^{n - k}$
+
+If we plug in our data, the formula becomes: $\mathrm{Pr}\left( y = 4 \mid \pi \right) = {5 \choose 4} \pi^{4}(1 - \pi)^{5 - 4}$
+
+Then, we want to find the value of $\pi$ that maximizes this expression—what is the most likely value of $\pi$ that could give us the data we've got?
+
+(This is an example of maximum likelihood estimation, or MLE. You'll learn more about it if you pursue quantitative methods courses in the department.)
+
+In this and many other cases, derivatives help us to do the optimization.
+
+---
+
+## Optimization: an example
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0,10, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 2*x^3-33*x^2+168*x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+
+Suppose we want to find all the maxima and minima for the function $f(x) = 2x^3 - 33x^2 + 168x$ when $x \in [0,10]$.
+
+]
+---
+
+## Optimization: an example
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0,10, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 2*x^3-33*x^2+168*x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+geom_point(x = 0, y= 0)+
+geom_point(x = 10, y= 2*10^3-33*10^2+168*10) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+
+Suppose we want to find all the maxima and minima for the function $f(x) = 2x^3 - 33x^2 + 168x$ when $x \in [0,10]$.
+
+The *absolute maximum* occurs at $x = 10$, and the *absolute minimum* occurs at $x = 0$, or the endpoints. But there also appear to be a local maximum and a local minimum in between them.
+
+]
+
+---
+
+## Optimization: an example
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0,10, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 2*x^3-33*x^2+168*x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+geom_point(x = 0, y= 0)+
+geom_point(x = 4, y= 2*4^3-33*4^2+168*4) +
+geom_point(x = 7, y= 2*7^3-33*7^2+168*7)+
+geom_point(x = 10, y= 2*10^3-33*10^2+168*10)+
+geom_segment(x = 3, xend = 5, y =  2*4^3-33*4^2+168*4, yend= 2*4^3-33*4^2+168*4, linetype = "dotdash" ) +
+geom_segment(x = 6, xend = 8, y =  2*7^3-33*7^2+168*7, yend= 2*7^3-33*7^2+168*7, linetype = "dotdash" ) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+
+Suppose we want to find all the maxima and minima for the function $f(x) = 2x^3 - 33x^2 + 168x$ when $x \in [0,10]$.
+
+The *absolute maximum* occurs at $x = 10$, and the *absolute minimum* occurs at $x = 0$, or the endpoints. But there also appear to be a local maximum and a local minimum in between them.
+
+To determine the precise location of these local maxima and minima, note: at these points, the slope of the line is flat. This means the derivative, which is the slope of the tangent line, is $0$.
+
+]
+
+---
+## Optimization: an example
+
+Armed with this insight,  we need to find $f'(x)$ and set it equal to $0$:
+
+--
+
+\begin{align}
+0 = f'(x) = (2x^3 - 33x^2 + 168x)' =  6x^2 −66x+168
+\end{align}
+
+--
+
+We can then just solve this equation:
+
+--
+
+\begin{align}
+0 &= 6x^2 - 66x+168 \\
+0 &= x^2 - 11x + 28
+\end{align}
+
+--
+
+We can solve it either by *factoring*
+
+$0 = (x^2 - 4x) + (-7x + 28) = x(x - 4) - 7(x - 4) = (x - 4) (x - 7)$
+
+...or by using the *quadratic formula*
+
+(if our equation is of the form $ax^2 + bx + c = 0$, then $x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$)
+
+$x = \frac{11 \pm \sqrt{(-11)^2-4(1)(28)}}{2(1)} = \frac{11 \pm 3}{2}$
+
+Either way, $x = 4$ or $x = 7$
+
+---
+class: center, middle
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0,10, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 2*x^3-33*x^2+168*x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+geom_point(x = 0, y= 0)+
+geom_point(x = 4, y= 2*4^3-33*4^2+168*4) +
+geom_point(x = 7, y= 2*7^3-33*7^2+168*7)+
+geom_point(x = 10, y= 2*10^3-33*10^2+168*10)+
+geom_segment(x = 3, xend = 5, y =  2*4^3-33*4^2+168*4, yend= 2*4^3-33*4^2+168*4, linetype = "dotdash" ) +
+geom_segment(x = 6, xend = 8, y =  2*7^3-33*7^2+168*7, yend= 2*7^3-33*7^2+168*7, linetype = "dotdash" )+
+geom_segment(x = 4, xend=4, y =0, yend = 2*4^3-33*4^2+168*4, colour = "black", linetype = "dotdash")+
+geom_segment(x = 7, xend=7, y =0, yend = 2*7^3-33*7^2+168*7, colour = "black", linetype = "dotdash")+
+scale_x_continuous(breaks=seq(0,10,1)) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+
+---
+
+## How do we determine maxima and minima?
+
+If the function is relatively simple to understand or graph, sometimes it is intuitively clear whether you’re dealing with a maximum or a minimum.
+
+--
+
+But often, we need to determine this mathematically by taking the second derivative and evaluating it at the point where the first derivative equals $0$, which we'll call $x^*$:
+
+--
+
+  - Negative $(f''(x^*) < 0)$: local maximum 
+  - Positive $(f''(x^*) > 0)$: local minimum 
+  - Zero $(f''(x^*) = 0)$: neither a minimum or a maximum; possible inflection point (if the function changes concavity at this point, e.g., $f(x) = x^3$ when $x = 0$) 
+
+--
+
+Returning to our previous example, 
+
+\begin{align}
+f'(x) &= 6x^2 - 66x+168 \\
+f''(x) &= 12x-66
+\end{align}
+
+When we evaluate the second derivatives at the local minimum and maximum, the results are $f''(4) = -18$ and $f''(7) = 18$. 
+
+---
+## An exercise
+
+Find the local minimum and local maximum of the function below and check mathematically which is the minimum and which is the maximum:
+
+$x^3−x^2+1$
+
+---
+
+
+## Multivariate functions & partial derivatives
+
+When a function takes multiple variables as inputs, it is only possible (and sometimes useful) to take the derivative with respect to one variable at a time, treating the others as constants.
+
+--
+
+These are known as partial derivatives, denoted $\partial$ (pronounced "del"), or $f_x(x,y)$ if you want the derivative of a function of $x$ and $y$ with respect to $x$. 
+
+--
+
+Consider $f(x,y,z)=4x^2y^4 +2xz^3+8y^2z^4 +8x+7y+3z+2$:
+
+\begin{align}
+\frac{\partial[f(x,y,z)]}{\partial x} = f_x(x,y,z) &= 8xy^4+2z^3+8 \\
+\frac{\partial[f(x,y,z)]}{\partial y} = f_y(x,y,z) &= 16x^2y^3+16yz^4+7 \\
+\frac{\partial[f(x,y,z)]}{\partial z} = f_z(x,y,z) &= 6xz^2+32y^2z^3+3
+\end{align}
+
+--
+
+Why is this useful? E.g., we are modeling election turnout as a function of age and income, and we want to know how turnout changes with respect only to changes in income.
+
+
+---
+
+## Exercise: partial derivatives
+
+Find the partial derivatives of the function below with respect to each variable
+
+$g(p,q) = 8p^2q+4pq−7pq^2 +18$
+
+---
+
+## Partial higher-order derivatives
+
+It is possible to combine second-order (and higher) derivatives with partial derivatives. For example:
+
+Consider $f(x, y) = 3x^3y^2$. We want to find $\frac{\partial^2}{\partial y \partial x}f(x,y)$:
+
+\begin{align}
+\frac{\partial^2}{\partial y \partial x}(3x^3y^2) &=\frac{\partial}{\partial y}((3)3x^{3-1}y^2) \\
+&=\frac{\partial}{\partial y}(9x^2y^2) \\
+&=(2)9x^2y^{2-1} \\
+&=18x^2y
+\end{align}
+
+--
+
+Pay attention to the denominator to learn what operations to perform, and in what order. Here, we are taking the second derivative of the entire function, but are differentiating once with respect to $x$ and then once with respect to $y$.
+
+If instead we were given $\frac{\partial^3}{\partial x^2 \partial y}$, we would differentiate 3 times overall, once with respect to $y$, and then twice with respect to $x$ (_note the order!_).
+
+---
+
+## Exercise: partial higher-order derivatives
+
+Consider again $f(x, y) = 3x^3y^2$. Find:
+
+- $\frac{\partial^3}{\partial x^2 \partial y}$
+- $\frac{\partial^3}{\partial x \partial y^2}$
+
+---
+
+## Integrals
+
+The integral is the **signed area** of the region between the curve and the x-axis.
+
+Signed implies that it can be positive or negative. Often, we just say "area under the curve."
+
+--
+
+Integral is either the total area as the function extends to infinity in either direction, or the area between two selected points.
+
+--
+
+One common application of integrals in social science is to calculate the probability that a variable falls in a certain range (e.g., that a conflict will leave more than a 1,000 people dead).
+
+---
+
+## Integral as an area
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+ylim(0,4) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Let's consider the function $y = 3$, plotted to the left. What is its area under the curve from $x=0.25$ and $x=0.75$?
+]
+
+
+---
+
+## Integral as an area
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+geom_segment(x = 0.25, xend = 0.25, y = 0, yend = 3, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.75, xend = 0.75, y = 0, yend = 3, colour = "red", linetype = "dotdash")+
+ylim(0,4) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Let's consider the function $y = 3$, plotted to the left. What is its area under the curve from $x=0.25$ and $x=0.75$?
+
+Given that this is a rectangle, the area between the function and the x-axis is $\text{area} = (0.75-0.25) \times 3 = 1.5$
+]
+
+
+---
+
+## Integral as an area
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x)  0.5*x+1, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")  +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Let's consider a less simple function, $y = \frac{1}{2}x+1$, plotted to the left.  What is its area under the curve from $x=0.25$ and $x=0.75$?
+]
+
+
+---
+
+## Integral as an area
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x)  0.5*x+1, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+geom_segment(x = 0.25, xend = 0.25, y = 0, yend = 0.5*(.25)+1, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.75, xend = 0.75, y = 0, yend = 0.5*(.75)+1, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.25, xend = 0.75, y = 0.5*(.25)+1, yend = 0.5*(.25)+1, colour = "red", linetype = "dotdash") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Let's consider a less simple function, $y = \frac{1}{2}x+1$, plotted to the left.  What is its area under the curve from $x=0.25$ and $x=0.75$?
+
+We can take advantage of the fact that we can draw a triangle and a rectangle and sum their areas: 
+
+$\text{area}_{tri} = 0.0625$ and $\text{area}_{rect}= 0.5625$. 
+
+Thus, the total area is $0.625$.
+
+]
+
+---
+
+## Integral as an area
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+
+```
+]
+
+.pull-right[
+Consider an even more complicated function, $y = x-x^2$, plotted to the left.  What is its area under the curve from $x=0.25$ and $x=0.75$?
+]
+
+---
+## Integral as the limit of a sum
+
+Imagine dividing the region into intervals and drawing a rectangle for each interval, with height equal to the value of the function to the left (or right) of the interval. 
+
+To capture the area under the curve, we can then sum the area of those rectangles.
+  
+Let's see what happens as we add rectangles.
+  
+---
+class: center,  middle
+
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("At first, the approximation is rough") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+geom_segment(x = 0.25, xend = 0.25, y = 0, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.75, xend = 0.75, y = 0, yend = .75 -(.75)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.25, xend = 0.75, y = .25 -(.25)^2, yend = .75 -(.75)^2, colour = "red", linetype = "dotdash")   +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+
+class: center, middle
+
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("With smaller intervals, approximation improves") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+# first box
+geom_segment(x = 0.25, xend = 0.25, y = 0, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.5, xend = 0.5, y = 0, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.25, xend = 0.5, y = .25 -(.25)^2, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+# second box
+geom_segment(x = 0.5, xend = 0.5, y = 0, yend = .5 -(.5)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.75, xend = 0.75, y = 0, yend = .5 -(.5)^2, colour = "red", linetype = "dotdash")+
+geom_segment(x = 0.5, xend = 0.75, y = .5 -(.5)^2, yend = .5 -(.5)^2, colour = "red", linetype = "dotdash")   +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+
+class: center, middle
+
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "black")+ theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("With smaller intervals, approximation improves") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+# first box
+geom_segment(x = 0.125, xend = 0.125, y = 0, yend = .125 -(.125)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = .25, xend = .25, y = 0, yend = .125 -(.125)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.125, xend = 0.25, y = .125 -(.125)^2, yend = .125 -(.125)^2, colour = "red", linetype = "dotdash") +
+# second box
+geom_segment(x = 0.25, xend = 0.25, y = 0, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = .375, xend = .375, y = 0, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.25, xend = 0.375, y = .25 -(.25)^2, yend = .25 -(.25)^2, colour = "red", linetype = "dotdash") +
+# third box
+geom_segment(x =  0.375, xend =  0.375, y = 0, yend =   0.375 -(0.375)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x =0.5, xend = 0.5, y = 0, yend = 0.375 -(0.375)^2, colour = "red", linetype = "dotdash")+
+geom_segment(x = 0.375, xend = 0.5, y = 0.375  -(0.375)^2, yend = 0.375  -(0.375)^2, colour = "red", linetype = "dotdash")  +
+# fourth box
+geom_segment(x =0.5, xend = 0.5, y = 0, yend = 0.5-(0.5)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.625, xend = 0.625, y = 0, yend = 0.625 -(0.625)^2, colour = "red", linetype = "dotdash")+
+geom_segment(x = 0.5, xend = 0.625, y = 0.5  -(0.5)^2, yend = 0.5  -(0.5)^2, colour = "red", linetype = "dotdash")+
+# fifth box
+geom_segment(x = 0.625, xend = 0.625, y = 0, yend = 0.625 -(0.625)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.75, xend = 0.75, y = 0, yend = 0.625 -(0.625)^2, colour = "red", linetype = "dotdash")+
+geom_segment(x = 0.625, xend = 0.75, y =0.625 -(0.625)^2, yend = 0.625 -(0.625)^2, colour = "red", linetype = "dotdash") +
+# sixth box
+geom_segment(x = 0.75, xend = 0.75, y = 0, yend = 0.75 -(0.75)^2, colour = "red", linetype = "dotdash") +
+geom_segment(x = 0.875, xend = 0.875, y = 0, yend = 0.75 -(0.75)^2, colour = "red", linetype = "dotdash")+
+geom_segment(x = 0.75, xend = 0.875, y =0.75 -(0.75)^2, yend = 0.75 -(0.75)^2, colour = "red", linetype = "dotdash") +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+
+## Integral as the limit of a sum
+
+As you reduce the width of rectangles to zero, the summed area of the rectangles converges to the area under the curve—including more and more of the area inside and less and less of the area outside. (This is similar to how we used limits to find derivatives.)
+
+\begin{align}
+\int_a^bf(x)dx = \displaystyle\lim_{h \to 0}\sum_{i=1}^{H}f(x_i)h_i
+\end{align}
+
+--
+
+This is read as the ''integral of $f(x)$ from $x=a$ to $x=b$ with respect to $x$.''
+
+--
+
+Theoretically, this approach allows to find:
+
+  - the exact value of the area between those points for any well-behaved   function
+  - a general equation for the area between any two points 
+  
+However, it is mathematically complicated to do this every time. So in practice, we use some shortcuts.
+
+---
+
+
+## Antiderivatives
+
+The antiderivative of a function $f(x)$, denoted $F(x)$, is the function whose derivative returns the original function. Formally, $F(x)$ is a function such that: 
+
+\begin{align}
+F'(x) = f(x)
+\end{align}
+
+--
+
+Essentially, this “unwinds” the derivative operation, or applies it backwards.
+
+---
+## The fundamental theorem of calculus
+
+The fundamental theorem of calculus relates the antiderivative and the integral.
+
+\begin{align}
+\int_a^bf(x)dx = F(b)-F(a) =  F(x)\displaystyle\rvert_a^b
+\end{align}
+
+---
+## Indefinite integrals
+
+So far, we've been discussing *definite* integrals, or ones that are bounded.
+
+There are also *indefinite* integrals, or integrals without specific bounds: 
+
+
+\begin{align}
+\int f(x)dx = F(x) + C
+\end{align}
+
+--
+
+This is the same antiderivative as in the definite integral, but we add an arbitrary constant $C$ (it disappears when taking the derivative and cancels out in subtraction).
+
+---
+
+## Important rules for antiderivatives
+
+There is an analogous concept of the *power rule* for antiderivatives (when $n \neq -1$).
+
+--
+
+If $f(x) = ax^n$, then its antiderivative is $$\int f(x)dx = F(x) + C = \frac{a}{n+1}x^{n+1}+C$$
+
+--
+
+Some other useful antiderivatives are:
+
+--
+
+\begin{align}
+\int adx = ax + C
+\end{align}
+
+--
+
+\begin{align}
+\int \frac{1}{x}dx = \int x^{-1}dx = ln(x) + C
+\end{align}
+
+--
+
+\begin{align}
+\int e^xdx = e^x + C
+\end{align}
+
+---
+## Important rules for antiderivatives
+
+Moreover, when dealing with addition and subtraction, we can separate integrals:
+
+--
+
+\begin{align}
+\int f(x) + g(x)dx = \int f(x)dx + \int g(x)dx = F(x)+G(x)+C 
+\end{align}
+
+--
+
+We can also pull out constants before integrating:
+
+--
+
+\begin{align}
+\int af(x)dx = a\int f(x)dx = aF(x) + C
+\end{align}
+
+---
+
+## Taking integrals: example 1
+
+Consider the example $f(x) = x - x^2$. The indefinite integral is
+
+--
+
+\begin{align}
+\int  x - x^2dx &= \int xdx-\int x^2dx  \\
+&= \frac{1}{1+1}x^{1+1}-\left(\frac{1}{2+1}x^{2+1}\right) + C\\
+&= \frac{1}{2}x^{2}-\frac{1}{3}x^{3} + C
+\end{align}
+
+(we can check our work by taking the derivative of the antiderivative)
+
+--
+
+Now consider the area specifically between $.25$ and $.75$
+
+--
+
+\begin{align}
+\int_.2^.75  x - x^2dx &= \frac{1}{2}x^{2}-\frac{1}{3}x^{3}\displaystyle\rvert_.25^.75  \\
+&= \left(\frac{1}{2}(.75)^{2}-\frac{1}{3}(.75)^{3}\right) - \left(\frac{1}{2}(.25)^{2}-\frac{1}{3}(.25)^{3}\right) \\
+& = \frac{11}{96}
+\end{align}
+---
+
+## Taking integrals: example 2
+
+Consider the example $f(x) = 9x^2+10x+4$. The indefinite integral is
+
+--
+
+\begin{align}
+\int  9x^2+10x+4dx &= 9\int x^2dx+10\int xdx  + \int 4dx \\
+&= 9\left(\frac{1}{3}\right)x^{3}+10\left(\frac{1}{2}\right)x^{2}+ 4x +C\\
+&=  3x^3 +5x^2 +4x+C
+\end{align}
+
+--
+
+Now consider the area of the curve specifically between 2 and 5:
+
+--
+
+\begin{align}
+\int_2^5  9x^2+10x+4dx    &= 3x^3 +5x^2 +4x\displaystyle\rvert_2^5  \\
+&= (3(5)^3 +5(5)^2 +4(5))-(3(2)^3 +5(2)^2 +4(2))\\
+& = 468
+\end{align}
+
+---
+
+## Exercise: taking integrals
+
+Find the indefinite integral of the function below, and then calculate the area under the curve between 0 and 1:
+
+$\int (2x^3-3x^2+7x+4)dx$
+
+---
+
+## Advanced integrals
+
+There are techniques for computing integrals of more complicated functions: 
+
+- **integration by parts** ("reverse product rule")
+
+- **integration by substitution** ("reverse chain rule")
+  
+These are generally beyond the scope of what you will need to do by hand in political science.
+
+
+```{css, echo=FALSE}
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```

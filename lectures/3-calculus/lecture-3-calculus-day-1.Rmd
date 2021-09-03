@@ -1,0 +1,1189 @@
+---
+title: "Math Camp Lesson 3 (Day 1)"
+subtitle: "Calculus"
+author: "UW--Madison Political Science"
+date: "September 1, 2021"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    #mathjax: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-themer, include = FALSE}
+library("here")
+source(here("R/setup-lectures.R"))
+```
+
+
+## Agenda
+
+Day 1
+  - Limits
+  - Derivatives
+
+Day 2
+  - More derivatives
+  - Integrals
+  - Applications
+  
+---
+
+## Overview
+
+Calculus evaluates the behavior of functions:
+- Limits
+- Rate of change
+- Change in the rate of change
+- Area of the region they are defined on
+
+--
+
+Concepts from calculus are used widely in the applied math relevant for political science. Some examples:
+
+- Finding the fit line with the minimal distance between predicted and observed data
+
+- Calculating the probability density in regions of continuous distributions
+
+- Solving for the choice that maximizes a decision maker's utility
+
+
+---
+
+## Limits
+
+The limit of a function is the value it approaches at particular inputs or as inputs change
+
+---
+
+## Limits: Example 1
+
+--
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0,4, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3-(x-2)^2, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Let's consider the simple function $f(x) = y = 3-(x-2)^2$, plotted to the left. What is the limit of $f(x)$ as $x$ *approaches* 2?]
+
+ 
+---
+
+## Limits: Example 1
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0,4, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3-(x-2)^2, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+geom_segment(x = 0, xend = 2, y =3, yend = 3, linetype = "dotdash") +
+geom_segment(x = 2, xend = 2, y =0, yend = 3, linetype = "dotdash") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Let's consider the simple function $f(x) = y = 3-(x-2)^2$, plotted to the left. What is the limit of $f(x)$ as $x$ *approaches* 2?
+
+As $x$ approaches 2,  $f(x)$ or $y$ approaches $f(2) = 3$.  
+
+]
+
+---
+
+## Limits: Example 2
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0.5,50, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3-1/x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("g(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider a less simple function, $g(x) = y = 3-\frac{1}{x}$, plotted to the left. What is the limit of $g(x)$ as $x$ *approaches* $\infty$?]
+
+ 
+---
+
+## Limits: Example 2
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0.5,50, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3-1/x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("g(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+geom_segment(x = 0, xend = 50, y =3, yend = 3, linetype = "dotdash") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider a less simple function, $g(x) = y = 3-\frac{1}{x}$, plotted to the left. What is the limit of $g(x)$ as $x$ *approaches* $\infty$?
+
+As $x$ approaches $\infty$, $g(x)$ approaches 3. How do we know?
+
+]
+
+---
+
+## Limits: Example 2
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0.5,50, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3-1/x, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("g(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+
+geom_segment(x = 0, xend = 50, y =3, yend = 3, linetype = "dotdash") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider a less simple function, $g(x) = y = 3-\frac{1}{x}$, plotted to the left. What is the limit of $g(x)$ as $x$ *approaches* $\infty$?
+
+As $x$ approaches $\infty$, $g(x)$ approaches 3. How do we know?
+
+As $x$ gets larger, $\frac{1}{x}$ gets smaller and smaller. $$\left(\frac{1}{2} > \frac{1}{20} > \frac{1}{200} \dots\right)$$
+
+]
+
+---
+## Limits: formal definition
+
+Limits are expressed as:
+
+\begin{align}
+\lim_{x \to c} f(x) = L
+\end{align}
+
+Which should be read as: "As $x$ approaches $c$, the limit of $f(x)$ is $L$"
+
+--
+
+Many times, you will see this expression written as 
+
+$\lim\limits_{x \to c^{-}} f(x) = L$ 
+
+or 
+
+$\displaystyle\lim_{x \to c^{+}} f(x) = L$ 
+
+A negative sign $(-)$ implies "As $x$ approaches $c$ *from the left*" 
+
+A positive sign $(+)$ implies "As $x$ approaches $c$ *from the right*"
+
+---
+
+## Tips for taking limits
+
+- Simplify as much as possible.
+
+- Separate out the limits into distinct elements.
+
+- Move constants outside the limit operator.
+
+- Watch out for components that $\dots$
+  + $\dots$ grow very large or very small
+  + $\dots$ become zero
+  + Are these components in the numerator or denominator of a fraction?
+
+- If you can, evaluate the function at the limit.
+
+- For functions that are well-behaved, the limit as $x$ approaches a finite point is generally the value of the function at that point (if it exists).
+
+---
+
+
+## Finding limits: Example 1
+
+Consider $\displaystyle\lim_{x \to 2} x^2-3x +1$
+
+--
+
+\begin{align}
+\displaystyle\lim_{x \to 2} x^2-3x +1 &= \lim_{x \to 2} x^2 -3\lim_{x \to 2}x + \lim_{x \to 2} 1 \\
+&= 2^2 - 3(2)+ 1 \\
+&= -1
+\end{align}
+
+---
+## Finding limits: Example 2
+
+Now, let's consider $\displaystyle\lim_{x \to \infty} \frac{4x^4+7x^2+8}{3x^4}$
+
+--
+\begin{align}
+\displaystyle\lim_{x \to \infty} \frac{4x^4+7x^2+8}{3x^4} 
+&= \lim_{x \to \infty}  \frac{4x^4}{3x^4} + \lim_{x \to \infty} \frac{7x^2}{3x^4}+ \lim_{x \to \infty}  \frac{8}{3x^4} \\
+&= \lim_{x \to \infty}  \frac{4}{3} + \lim_{x \to \infty} \frac{7}{3x^2}+ \lim_{x \to \infty}  \frac{8}{3x^4} \\
+&= \frac{4}{3} + 0 + 0 \\
+&= \frac{4}{3} 
+\end{align}
+
+Why does $\lim_{x \to \infty} \frac{7}{3x^2} = 0$? As $x \to \infty$, $3x^2 \to \infty$, and $\frac{7}{\infty} \to 0$.
+
+---
+
+## Finding limits: Example 3
+
+Consider $\displaystyle\lim_{x \to 0} \frac{4x^4+7x^2 +8}{3x^4}$
+
+--
+
+\begin{align}
+&= \lim_{x \to 0} \frac{4x^4}{3x^4} + \lim_{x \to 0} \frac{7x^2}{3x^4}+ \lim_{x \to 0} \frac{8}{3x^4} \\
+&= \lim_{x \to 0} \frac{4}{3} + \lim_{x \to 0} \frac{7}{3x^2}+ \lim_{x \to 0} \frac{8}{3x^4} \\
+&= \frac{4}{3} + \frac{7}{3} \lim_{x \to 0} \frac{1}{x^2}+ \frac{8}{3}\lim_{x \to 0} \frac{1}{x^4} \\
+\end{align}
+
+--
+\begin{align}
+&= \infty
+\end{align}
+
+As $x$ approaches $0$, the function retains some positive value in the numerator while the denominator *positively* approaches 0 $\rightarrow$ you are dividing by a smaller and smaller number $\rightarrow$ the entire term is getting larger and approaches $\infty$.  
+
+---
+
+class: center, middle
+
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(-10,10, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) (4*x^4+7*x^2+8)/(3*x^4), colour = "red")+ theme_minimal()+
+xlab("x") + ylab("f(x)") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")+ ylim(-30,30)+
+geom_segment(x = 0, xend = 0, y =3, yend = 3, linetype = "dotdash") 
+```
+
+---
+
+## Exercises
+
+Find the following limits:
+
+$\lim_{x \to 4} x^2-6x+4$
+
+$\lim_{x \to 4} \frac{x^2}{3x - 2}$
+
+$\lim_{x \to \infty} \frac{x - 3}{x^2-9}$
+
+---
+## Derivatives
+
+The derivative of a function is its rate of change in the output as the value of its input changes.
+
+--
+
+It is the instantaneous slope of the line ("rise-over-run") at any given point:
+
+$\frac{\Delta f(x)}{\Delta x} = \frac{f(x_2)-f(x_1)}{x_2-x_1}$,
+
+where $\Delta$ signifies "change" 
+
+---
+
+## Slopes
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(-5, 5, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+ylim(0,5) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider the function $y = 3$, plotted to the left. What is its ''slope''?
+]
+
+---
+
+## Slopes
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(-5, 5, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 3, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+ylim(0,5) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider the function $y = 3$, plotted to the left. What is its ''slope''?
+
+Its slope or $\frac{\Delta f(x)}{\Delta x} = 0$ because there is no "rise".
+]
+
+---
+
+
+## Slopes
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(-5, 5, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 0.5*x+1, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+
+```
+]
+
+.pull-right[
+Consider a less simple function, $y = \frac{1}{2}x+1$, plotted to the left. What is its ''slope''?
+]
+
+---
+
+## Slopes
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(-5, 5, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) 0.5*x+1, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black")  +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider a less simple function, $y = \frac{1}{2}x+1$, plotted to the left. What is its ''slope''?
+
+Its slope or $\frac{\Delta f(x)}{\Delta x} = \frac{1}{2}$. 
+
+[Recall: $y =mx +b$ from Day 1]
+]
+
+---
+
+## Slopes
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+
+```
+]
+
+.pull-right[
+Consider the function $y = x-x^2$, plotted to the left. What is its ''slope'', or $\frac{\Delta f(x)}{\Delta x}$?
+]
+
+---
+
+## Slopes
+
+.pull-left[
+```{r, echo=FALSE, cache = TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+ theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Consider the function $y = x-x^2$, plotted to the left. What is its ''slope'', or $\frac{\Delta f(x)}{\Delta x}$?
+
+What does "slope" mean in this case, and how do we calculate it?
+]
+
+
+---
+
+## Derivatives as limits
+
+We can approximate the slope at a certain point by:
+
+- picking a point nearby on the line... 
+- ...and finding the slope of the straight line connecting these two points
+
+--
+
+Let's look at some examples.
+
+---
+
+
+
+class: center, middle
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle(" ") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+
+class: center, middle
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+stat_function(fun = function(x) .21, colour = "black")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("When the interval is wide, it is not a good approximation") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+class: center, middle
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+stat_function(fun = function(x) 0.1*x+0.18, colour = "black")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("When the interval is wide, it is not a good approximation") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+class: center, middle
+```{r, echo=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+stat_function(fun = function(x) 0.2*x+0.15, colour = "black")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("As the interval shrinks, approximation becomes better") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+
+class: center, middle
+```{r, echo=FALSE,  warning=FALSE, cache = TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+stat_function(fun = function(x) 0.3*x+0.12, colour = "black")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("As the interval shrinks, approximation becomes better") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+class: center, middle
+```{r, echo=FALSE, warning=FALSE, cache=TRUE, out.width = "80%"}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+stat_function(fun = function(x) 0.4*x+.09, colour = "black")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+  ggtitle("As the interval shrinks, approximation becomes better") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 19),
+        axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+---
+## Derivatives as limits
+
+As we reduce the interval size to $0$, this line converges in the limit to the line that lies tangent to the curve at that point. 
+
+Recall that $f(x) = x − x^2$ and consider a very small interval $\epsilon \dots$
+
+--
+
+\begin{align}
+\frac{\Delta f(x)}{\Delta x} &= \lim_{\epsilon \to 0}\frac{f(x+\epsilon)-f(x)}{(x+\epsilon)-x}
+\end{align}
+
+---
+## Derivatives as limits
+
+
+As we reduce the interval size to $0$, this line converges in the limit to the line that lies tangent to the curve at that point. 
+
+Recall that $f(x) = x − x^2$ and consider a very small interval $\epsilon$:
+
+\begin{align}
+\frac{\Delta f(x)}{\Delta x} &= \lim_{\epsilon \to 0}\frac{f(x+\epsilon)-f(x)}{(x+\epsilon)-x} \\
+&= \lim_{\epsilon \to 0} \frac{[(x+\epsilon)-(x+\epsilon)^2]-[(x)-(x)^2]}{(x+\epsilon)-x}  \\
+&=\lim_{\epsilon \to 0} \frac{[x+\epsilon -(x^2+2\epsilon x+\epsilon^2)]-[(x)-(x)^2]}{(x+\epsilon)-x}   \\
+&=\lim_{\epsilon \to 0} \frac{x+\epsilon -x^2-2\epsilon x-\epsilon^2 -x+x^2}{x+\epsilon-x}
+\end{align}
+
+
+
+---
+
+## Derivatives as limits
+
+
+\begin{align}
+\frac{\Delta f(x)}{\Delta x} &= \lim_{\epsilon \to 0} \frac{x+\epsilon -x^2-2\epsilon x-\epsilon^2 -x+x^2}{x+\epsilon-x} \\
+&= \lim_{\epsilon \to 0} \frac{\epsilon- 2\epsilon x-\epsilon^2}{\epsilon} \\
+ &= \lim_{\epsilon \to 0} 1- 2 x-\epsilon
+\end{align}
+
+---
+
+## Derivatives as limits
+
+
+\begin{align}
+\frac{\Delta f(x)}{\Delta x} &= \lim_{\epsilon \to 0} \frac{x+\epsilon -x^2-2\epsilon x-\epsilon^2 -x+x^2}{x+\epsilon-x} \\
+&= \lim_{\epsilon \to 0} \frac{\epsilon- 2\epsilon x-\epsilon^2}{\epsilon} \\
+&= \lim_{\epsilon \to 0} 1- 2 x-\epsilon \\
+&= 1- 2x
+\end{align}
+
+This is the _general formula_ for the derivative of the function $f(x) = x − x^2$; we can apply it to any point in the function's domain.
+
+---
+## Derivatives as limits
+
+.pull-left[
+```{r, echo=FALSE, warning=FALSE, cache=TRUE}
+df <- data.frame(x = seq(0, 1, by= 1))
+
+ggplot(df, aes(x)) + 
+stat_function(fun = function(x) x-x^2, colour = "red")+
+stat_function(fun = function(x) 0.4*x+.09, colour = "black")+
+geom_point(x=0.3, y = .21)+
+theme_minimal()+
+xlab("x") + ylab("y") +
+geom_hline(yintercept = 0, colour = "black")+
+geom_vline(xintercept = 0, colour = "black") +ylim(0,0.35) +
+  theme(axis.title = element_text(size = 21),
+        axis.text = element_text(size = 18))
+```
+]
+
+.pull-right[
+Using this formula, the slope of the curve at $x = .3$ (the point from the previous examples) is exactly:
+
+
+\begin{align}
+\text{slope} &= 1 - 2(.3) \\
+&= 0.4
+\end{align}
+
+
+Or, if we want to find the point at which the slope is $0$ (rate of change is $0$):
+
+
+\begin{align}
+0 &= 1 - 2x \\
+2x &= 1 \\
+x &= 0.5
+\end{align}
+]
+
+---
+## Recap: derivatives
+
+To sum up, the derivative is equivalent to:
+
+\begin{align}
+\frac{d[f(x)]}{dx} = \lim_{\epsilon \to 0}\frac{f(x+\epsilon)-f(x)}{(x+\epsilon)-x}
+\end{align}
+
+--
+
+Using this approach, we can find:
+
+  - A general equation for the slope at any point
+  - The exact value of the slope at a given point
+  - The point that has a particular slope
+---
+
+## Derivative notation
+
+Different notation systems for expressing derivatives:
+
+--
+
+First derivative: $\frac{d[f(x)]}{dx}$, $\frac{d}{dx}[f(x)]$, $f'(x)$, or $f^1(x)$
+
+--
+
+Second derivative: $\frac{d^2[f(x)]}{dx^2}$, $\frac{d^2}{dx^2}[f(x)]$, $f''(x)$, or $f^2(x)$
+
+(we will learn more about second derivatives later)
+
+--
+
+In this course, we'll be using $f'(x)$ and $f''(x)$, but feel free to use whatever notation makes sense to you!
+
+---
+## Cautionary notes on derivatives
+
+A few assumptions in using this approach to find the slope: 
+
+- The function is continuous (no gaps or jumps).
+- The derivative exists (the limit of the slope is the same from the left as it is from the right), or *no sharp corners*.
+
+--
+
+For usual political science applications, these are fine assumptions. But it is important to state them explicitly and be aware of them.
+
+---
+
+## It gets easier
+
+Fortunately (for humans), it is not necessary to use this whole formula with $\epsilon$ and to take limits to find derivatives. 
+
+There are a few rules that allow us to easily find the derivatives of most functions.
+
+---
+
+## The power rule
+
+If $f(x) = cx^n$, then its derivative is $f'(x) = ncx^{n-1}$.
+
+--
+
+The simplest example: consider the line $f(x) = 3x$. What's its derivative? 
+
+--
+
+\begin{align}
+f'(x) &= (3x)' \\
+      &= (3x^1)' \\
+      &= 1 \times 3x^{1-1} \\
+      &= 3x^0 = 3
+\end{align}
+
+--
+
+A special case: the *derivative of a constant is zero*.
+
+E.g., if $f(x) = 3$, $f'(x) = 0$
+
+---
+
+## The power rule: examples
+
+Let $f(x) = 3x^2$, then:
+
+--
+\begin{align}
+f'(x) &= (2) 3x^{2-1} \\
+      &= 6x \\
+\end{align}
+
+--
+Let $g(x) = x^5$, then:
+
+--
+\begin{align}
+g'(x) &= (5)x^{5-1} \\
+      &= 5x^4 \\
+\end{align}
+
+--
+Let $h(x) = 7x^{\frac{1}{2}}$, then:
+
+--
+\begin{align}
+h'(x) &=\left(\frac{1}{2}\right)7x^{\frac{1}{2}-1} \\
+      &= \frac{7}{2}x^{-\frac{1}{2}} \\
+\end{align}
+
+---
+## Exercises
+
+Find the following derivatives and calculate the instantaneous slope of the curves at the point $x = 2$:
+
+$f(x) = \frac{1}{4}x^4$
+
+$g(x) = \frac{2}{x^3}$  [Hint: How else can we express fractions?]
+
+$h(x) = 4x^{\frac{5}{2}}$
+
+$j(x) = \sqrt[\leftroot{-2}\uproot{2}3]{x}$ [Hint: How else can we express roots?]
+
+---
+## Derivative of a sum (or difference)
+
+The derivative of a sum (difference) is the sum (difference) of the derivatives.
+
+--
+\begin{align}
+(f(x) +g(x))' = f'(x)+g'(x)
+\end{align}
+
+--
+For example, let $f(x) = 4x^2$ and $g(x) =5x^3$. What is $(f(x)+g(x))'$?
+
+--
+\begin{align}
+f'(x)+g'(x) &= (4x^2)' + (5x^3)' \\
+&= (2)4x^{2-1} + (3)5x^{3-1}\\
+&= 8x +15x^2
+\end{align}
+
+--
+
+Let $f(x) = x$ and $g(x) =x^2$.  What is $(f(x)-g(x))'$?
+
+--
+
+\begin{align}
+f'(x)-g'(x) &= (x)' - (x^2)' \\
+&= (1)x^{1-1} - (2)x^{2-1}\\
+&= 1-2x
+\end{align}
+
+---
+## Derivative of a sum (or difference)
+
+Find the derivative of $h(x) = 5x^5-10x^3+6x^2-3$ and the rate of change when $x=1$.
+
+--
+
+\begin{align}
+h'(x) &= (5x^5-10x^3+6x^2-3)' \\
+      &= (5x^5)'-(10x^3)'+(6x^2)'-(3)' \\
+      &= 5 \times 5x^{5-1} - 3 \times 10x^{3-1}+2\times 6x^{2-1} - 0 \\
+      &= 25x^4 - 30x^2+12x
+\end{align}
+
+--
+
+What is the rate of change when $x$ is equal to 1?
+
+--
+
+\begin{align}
+h'(1) &=  25x^4 - 30x^2+12x \\
+h'(1) &=  25(1)^4 - 30(1)^2+12(1) \\
+h'(1) &= 7
+\end{align}
+---
+
+## Derivative of a product
+
+The derivative of a product of two functions $f(x)$ and $g(x)$ is:
+
+--
+
+\begin{align}
+(f(x) \times g(x))'= f'(x) \times g(x) + f(x) \times g'(x)
+\end{align}
+
+--
+
+or the derivative of the first function *times* second function *plus* the first function *times* the derivative of second function.
+
+--
+
+This is **the product rule**.
+
+---
+
+## The product rule: an example
+
+Consider $f(x) =x^2 +1$ and $g(x) = x^3-4x$.  
+
+What is $(f(x) \times g(x))'$?
+
+--
+
+
+\begin{align}
+(f(x) \times g(x))' &= ((x^2 +1)(x^3-4x))' \\
+&= (x^2 +1)'(x^3-4x)+ (x^2 +1)(x^3-4x)' \\
+&= (2x)(x^3-4x)+ (x^2 +1)(3x^2-4) \\
+&= 2x^4-8x^2+3x^4-4x^2+3x^2-4 \\
+&= 5x^4-9x^2-4
+\end{align}
+
+--
+
+This is easy to check by multiplying out the polynomial: $(x^2 +1)(x^3-4x) = x^5-3x^3-4x$, and then taking its derivative:
+
+--
+\begin{align}
+(x^5-3x^3-4x)' = 5x^4-9x^2-4
+\end{align}
+
+---
+
+## Derivative of a quotient
+
+The derivative of a quotient of two functions $f(x)$ and $g(x)$ is:
+
+--
+\begin{align}
+\left(\frac{f(x)}{g(x)}\right)'= \frac{f'(x) \times g(x)-f(x) \times g'(x)}{g(x)^2}
+\end{align}
+
+--
+
+or the bottom *times* the derivative of the top *minus* the top *times* the derivative of the bottom, all *divided* by the bottom *squared*.
+
+--
+
+This is **the quotient rule**.
+
+
+---
+
+## The quotient rule: an example
+
+Let $f(x) =x^2 +1$ and $g(x) = x^3-4x$. What is $\left(\frac{f(x)}{g(x)}\right)'$?
+
+--
+
+
+\begin{align}
+\left(\frac{f(x)}{g(x)}\right)' &= \left(\frac{x^2 +1}{x^3-4x}\right)' \\
+&= \frac{(x^2 +1)'(x^3-4x)-(x^2 +1)(x^3-4x)'}{(x^3-4x)^2} \\
+&=  \frac{(2x)(x^3-4x)-(x^2 +1)(3x^2-4)}{(x^3-4x)^2} \\
+&= \frac{2x^4-8x^2-(3x^4-4x^2+3x^2-4)}{(x^3-4x)^2}  \\
+&= \frac{-x^4-7x^2+4}{(x^3-4x)^2}
+\end{align}
+
+---
+## Exercises
+
+Find the derivatives of the following expressions:
+
+$(3x^2-4x+2)(x^3-x^2+x-1)$
+
+$\frac{4x+1}{3x^2-2}$
+
+---
+## Derivatives of nested functions
+
+Let's say $h(x) = f(g(x))$.
+
+The derivative of one function nested inside another is:
+
+--
+\begin{align}
+(f(g(x)))'= f'(g(x)) \times g'(x)
+\end{align}
+
+--
+
+or the derivative of the outside with respect to the inside *times* the derivative of the inside function.
+
+--
+
+This is referred to as **the chain rule**.
+
+Extremely useful as a way to find derivatives of complex functions: you can treat them as nested chains of functions.
+
+
+---
+
+## The chain rule: examples
+
+Let $h(x) = 6(3x^2 + 2)^4$. This can be thought of as two nested functions, such that $g(x) = 3x^2 + 2$ and $f(x) = 6x^4$, and $h(x) = f(g(x))$. 
+
+What is $h'(x)$?
+
+--
+
+\begin{align}
+h(x)' = (f(g(x)))' &= (6(3x^2 + 2)^4)'(3x^2 + 2)' \\
+&= (4)6(3x^2 + 2)^{4-1}(3x^2 + 2)' \\
+&= 24(3x^2 + 2)^{3}(6x) \\
+&= 144x(3x^2 + 2)^{3} \\
+\end{align}
+
+---
+
+## The chain rule: examples
+
+Let $k(x) = 3(6x^4)^2 + 2$. This can be thought of as the same two functions nested in the _reverse order_, such that $g(x) = 3x^2 + 2$ and $f(x) = 6x^4$, and $k(x) = g(f(x))$.
+
+What is $k'(x)$?
+
+--
+
+\begin{align}
+k(x)' = (g(f(x)))' &= (3(6x^4)^2 + 2)'(6x^4)' \\
+&= (2) 3(6x^4)^{2-1}(6x^4)' + 0 \\
+&=(2) 3(6x^4)^{2-1}(24x^{4-1}) \\
+&=(2) 3(6x^4)(24x^{3}) \\
+&= 864x^7
+\end{align}
+
+---
+
+## Exercises
+
+Express the functions below as the nested result of two simpler functions and use the chain rule to find the derivative:
+
+$(3x-1)^4$
+
+$2(x^4+x^3)+7$
+
+---
+## Derivatives of logarithms
+
+The derivative for any logarithm base $b$ is 
+
+--
+
+\begin{align}
+(\log_b(x))' = \frac{1}{ln(b)x}
+\end{align}
+
+--
+
+A very special case is the derivative of a natural logarithm (log base $e$), which is
+
+--
+
+\begin{align}
+(log_e(x))' = (ln(x))' &= \frac{1}{ln(e)x} \\
+&= \frac{1}{x}
+\end{align}
+
+---
+
+## Derivatives of logarithms
+
+Let $f(x) = log_{10}(x)$. What is $f'(x)$?
+
+--
+
+\begin{align}
+f'(x) = (log_{10}(x))' = \frac{1}{ln(10)x}
+\end{align}
+
+--
+
+Let $g(x) = ln(3x^2+4)$. What is $g'(x)$? 
+
+--
+
+(using the chain rule):
+
+\begin{align}
+g'(x) = (ln(3x^2+4))' &= \frac{1}{3x^2+4}\times(3x^2+4)' \\
+&= \frac{6x}{3x^2+4}
+\end{align}
+---
+
+## Derivatives of exponentials
+
+The derivative for any exponential base $b$ is 
+
+--
+
+\begin{align}
+(b^x)' = ln(b)b^x
+\end{align}
+
+--
+
+A very special case is the derivative of $e^x$, which is
+
+--
+
+\begin{align}
+(e^x)' &= ln(e)e^x \\
+ &= 1 \times e^x \\
+ &= e^x
+\end{align}
+
+
+---
+
+## Derivatives of exponentials
+
+Let $f(x) = 4^x$. What is $f'(x)$?
+
+--
+
+\begin{align}
+f'(x) =(4^x)' = ln(4)4^x
+\end{align}
+
+--
+
+Let $g(x) = 2^{3x}$. What is $g'(x)$?
+
+--
+
+\begin{align}
+g'(x) = (2^{3x})' &= ln(2)\times 2^{3x}\times(3x)' \\
+&= 3ln(2)\times 2^{3x}
+\end{align}
+
+--
+
+Let $h(x) = 4e^x$. What is $h'(x)$?
+
+--
+
+\begin{align}
+h'(x) = (4e^x)' &= 4e^x 
+\end{align}
+
+---
+
+## Recap: why we're doing this
+
+All these rules help us to:
+
+- Find general formulas for the derivatives of various functions
+- Find the slopes of such functions at any given point
+- Find when the function is increasing or decreasing, and how fast
+- Explore the behavior of functions in various other ways, e.g., look for maxima and minima (more on that tomorrow)
+
+---
+
+## Bonus: L'Hôpital's Rule
+
+Most often you won't need to calculate limits by hand. But if you do, there is one useful trick. It is especially helpful if both the numerator and the denominator are $0$, $\infty$, or $-\infty$ because in that case, we cannot evaluate the limit.
+
+Consider the limit: $\lim_{x \to 2} \frac{x^2 + x - 6}{x^2 - 4}$
+
+$\frac{2^2 + 2 - 6}{2^2 - 4} = \frac{0}{0}$
+
+--
+
+What can we do? Take the derivative first!
+
+**L'Hôpital's rule** says: $\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$
+
+Then, $\lim_{x \to 2} \frac{x^2 + x - 6}{x^2 - 4} = \lim_{x \to 2} \frac{(x^2 + x - 6)'}{(x^2 - 4)'} = \lim_{x \to 2} \frac{2x + 1}{2x} = 1.25$
+
+Can use this even if you can evaluate the limit using the "original" function, as taking the derivative simplifies the function $\rightarrow$ less work to do
+
+
+---
+
+class: center, inverse, middle
+
+
+# End Day 3
+
+
+```{css, echo=FALSE}
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```
