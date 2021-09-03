@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=.8in, bottom=.8in, left=1in, right=1in]{geometry}
+\renewcommand{\rmdefault}{pplx}
+\usepackage[sc]{mathpazo}
+\usepackage[OT1, euler-hat-accent]{eulervm}
+\usepackage[usenames, dvipsnames, svgnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[small, compact]{titlesec}
+\setitemize[0]{leftmargin=*}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{multicol, multirow}
+\usepackage{epsfig, subfigure, subfloat, graphicx}
+\usepackage{anysize, indentfirst, setspace}
+\usepackage{verbatim, rotating, xfrac}
+\usepackage{gensymb}
+\usepackage{caption, hanging}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+%\parindent 0pt
+%\setdefaultenum{a.}{i.}{A}{1}
+%\setdefaultitem{}{\textperiodcentered}{}{}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{caption, hanging}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds}
+%\setdefaultenum{a.}{1)}{i.}{a.}
+\parindent 0pt
+
+\makeatletter
+\newcommand{\distas}[1]{\mathbin{\overset{#1}{\kern\z@\sim}}}%
+\newsavebox{\mybox}\newsavebox{\mysim}
+\newcommand{\distras}[1]{%
+  \savebox{\mybox}{\hbox{\kern3pt$\scriptstyle#1$\kern3pt}}%
+  \savebox{\mysim}{\hbox{$\sim$}}%
+  \mathbin{\overset{#1}{\kern\z@\resizebox{\wd\mybox}{\ht\mysim}{$\sim$}}}%
+}
+\makeatother
+
+\title{\Large{\bf{\vspace{-100pt}Mathematics for Political Science \vspace{-15pt}}}}
+\author{\large{Exercise 2 Solutions: Calculus }}
+\date{August 19\textsuperscript{th}, 2020}
+\begin{document}
+\maketitle
+
+\hrule
+
+\vspace{.5cm}
+
+\begin{enumerate}
+
+
+
+\item  
+\begin{enumerate}
+\item $-4$
+\item $-5$
+\item $1.6$
+\item $2$
+\end{enumerate}
+
+\vspace{.5cm}
+
+\item 
+\begin{enumerate}
+\item $9$
+\item $3$
+\item $1$
+\end{enumerate}
+
+\vspace{.5cm}
+
+\item 
+\begin{center}
+\begin{tabular}{p{4cm}p{4cm}p{4cm}}
+a. $x^{-\frac{2}{3}}$            &  b. $14$                          & c. $3y^2 + 6y$              \rule{0cm}{1cm}\\
+d. $5x^4 + 3x^2 - 2x$            &  e. $1 + 3y^2 + \frac{14}{y^3}$   & f. $2y + y^{-2} - 3y^{-4}$               \rule{0cm}{1cm}\\
+g. $\frac{12x^2 - 8x + 16}{x^4 - 8x^3 + 16x^2}$ & h. $e^{y^2 - 3y + 2} (2y-3)$   & i. $\frac{2}{x}$ \rule{0cm}{1cm}\\
+\end{tabular}
+\end{center}
+
+\vspace{.5cm}
+
+\item  $4(8(x^4+2)-1)*8*4x^3$
+
+\vspace{.5cm}
+
+
+
+
+\item 
+\begin{align*}
+f(x) &= 3x^2 - 7x + 2 &  g(x) &= 8x^3 - 46x^2 + 73x - 35
+\end{align*}
+% f'(x) = 6x - 7, x =7/6.... g'x=24x^2 - 92x + 73
+\begin{itemize}
+\item f(x): minimum at $x=\frac{7}{6}$
+\item g(x): maximum at $x=\frac{23-\sqrt{91}}{12}$, minimum at $x=\frac{23+\sqrt{91}}{12}$
+\end{itemize}
+
+\vspace{.5cm}
+
+\item 
+\begin{enumerate}
+%\item $\ln (L) = 2\ln (x) + x - \ln(2x+1)$
+\item $0 = \frac{2}{x} + 1 - \frac{2}{2x+1}$
+\item $-2x^2 + x + 2 = 0$
+\item Zeroes at approximately -.78 and 1.28.
+\end{enumerate}
+
+
+\vspace{.5cm}
+
+\item 
+\begin{itemize}
+\item $\frac{\partial(.)}{\partial e} = h(eR(\frac{f}{f+g}))^{h-1}R\frac{f}{f+g} $
+\item $\frac{\partial(.)}{\partial f} =h(eR(\frac{f}{f+g}))^{h-1}eR\frac{g}{(f+g)^2} $
+\end{itemize} 
+
+\vspace{.5cm}
+
+
+\item 
+\begin{center}
+\begin{tabular}{p{4cm}p{4cm}p{4cm}}
+a. $y^4 + C$            &  b. $\frac{1}{3}x^3 - 2x^\frac{1}{2} + C$     & c.  $\frac{360}{7}t^7 + C$         \rule{0cm}{1cm}\\
+\end{tabular}
+\end{center}
+
+\vspace{.5cm}
+
+\item 
+\begin{center}
+\begin{tabular}{p{4cm}p{4cm}p{4cm}}
+a. $700$            &  b. $\frac{531440}{3}$       & c. $0$                        \rule{0cm}{1cm}\\
+d. $28\frac{2}{3}$  &  e. $e^4 - e^2$              & f. $\frac{16}{3} - \frac{4}{3}\sqrt{2}$  \rule{0cm}{1cm}\\
+\end{tabular}
+\end{center}
+
+\vspace{.5cm}
+
+\item $2306\frac{2}{3}$
+
+\vspace{.5cm}
+
+
+\end{enumerate}
+
+\vfill
+\begin{center}
+\small{Thanks to Sarah Bouchat, Michael DeCrescenzo, Brad Jones, and Dave Ohls for past years' materials.}
+\end{center}
+
+
+\end{document} 

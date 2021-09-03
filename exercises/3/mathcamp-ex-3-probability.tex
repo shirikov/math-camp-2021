@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=.8in, bottom=.8in, left=1in, right=1in]{geometry}
+\renewcommand{\rmdefault}{pplx}
+% \usepackage[sc]{mathpazo}
+\usepackage{fourier}
+\usepackage[OT1, euler-hat-accent]{eulervm}
+\usepackage[usenames, dvipsnames, svgnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[small, compact]{titlesec}
+\setitemize[0]{leftmargin=*}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{multicol, multirow}
+\usepackage{epsfig, subfigure, subfloat, graphicx}
+\usepackage{anysize, indentfirst, setspace}
+\usepackage{verbatim, rotating, xfrac}
+\usepackage{gensymb}
+\usepackage{caption, hanging}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+%\parindent 0pt
+%\setdefaultenum{a.}{i.}{A}{1}
+%\setdefaultitem{}{\textperiodcentered}{}{}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{caption, hanging}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds}
+%\setdefaultenum{a.}{1)}{i.}{a.}
+\parindent 0pt
+
+\makeatletter
+\newcommand{\distas}[1]{\mathbin{\overset{#1}{\kern\z@\sim}}}%
+\newsavebox{\mybox}\newsavebox{\mysim}
+\newcommand{\distras}[1]{%
+  \savebox{\mybox}{\hbox{\kern3pt$\scriptstyle#1$\kern3pt}}%
+  \savebox{\mysim}{\hbox{$\sim$}}%
+  \mathbin{\overset{#1}{\kern\z@\resizebox{\wd\mybox}{\ht\mysim}{$\sim$}}}%
+}
+\makeatother
+
+\title{\Large{\bf{\vspace{-100pt}Mathematics for Political Science \vspace{-15pt}}}}
+\author{\large{Exercise 3: Probability}}
+\date{August 21\textsuperscript{st}, 2020}
+
+\begin{document}
+\maketitle
+
+\hrule
+
+\begin{enumerate}
+
+\item Suppose the department is choosing its leadership for next year: a chair, and associate chair, and four field chairs (IR, Comparative, American, Theory).  Individuals cannot be both chair and associate chair, but they may hold either of those jobs as well as a field job.  If there are 5 IR faculty, 12 Comparative faculty, 13 Americanist faculty, and 6 Theory faculty, how many different leadership groups could be formed? (assuming faculty members are counted according to their primary subfield, so these are non-overlapping groups).
+
+
+\item For the sets defined in the lecture slides (considering each set of sets separately):
+\begin{enumerate}
+\item What is the complement of set D? (presidential set)
+\item Draw graphically the complement of the set ``Rational Numbers''. (spatial set)
+\item Which other sets are subsets of the set ``Integers''? (spatial set)
+\item What is the intersection of sets ``Rational Numbers'' and ``Natural Numbers''? (spatial set)
+\item What is the union of sets F and G? (dice set)
+\item What is the complement of the union of sets ``Whole Numbers'' and ``Irrational Numbers''? (spatial set)
+\item What is the intersection of sets P and I? (presidential set)
+\end{enumerate}
+
+
+\item (Gill 7.6) For some set A, explain $A \cup A$ and $A \cap A$.
+
+
+\item (Gill 7.5 [adapted]) Suppose you had a pair of four-sided dice, so the set of possible outcomes from summing the results from a single toss is \{2,3,4,5,6,7,8\}.  Determine the probability of each of these outcomes.
+
+
+\item Calculate the following probabilities:
+\begin{enumerate}
+\item Flipping a fair coin 7 times and seeing an alternating pattern with no result identical to the previous result. 
+\item Drawing 10 cards from a deck (with replacement) and getting exactly three face cards and seven non face cards, in any order.
+\item Rolling a fair, six-sided die 9 times and \textit{not} getting exactly three 3s, three 4s, and three 5s (in any order).
+\end{enumerate}
+
+
+\item (Gill 7.15) Use this joint probability distribution
+\begin{center}
+\begin{tabular}{cc|ccc}
+    &    & Y     &       &       \\
+    &    & 0     & 1     & 2     \\ \hline
+X   &0   & 0.10  & 0.10  & 0.01  \\
+    &1   & 0.02  & 0.10  & 0.20  \\
+    &2   & 0.30  & 0.10  & 0.07
+\end{tabular}
+\end{center}
+to compute the following:
+\begin{enumerate}
+\item $p(X $<$ 2)$
+\item $p(X $<$ 2| Y $<$ 2)$
+\item $p(Y = 2| X \leq 1)$
+\item $p(X = 1| Y = 1)$
+\item $p(Y $>$ 0| X $>$ 0)$
+\end{enumerate}
+
+
+\item (Gill 7.10) In rolling two 6-sided dice labeled X and Y, what is the probability that the sum of the up faces is four, given that either X or Y shows a three?
+
+
+\item Consider some variations of the Bayes Rule problems from the slides:
+\begin{enumerate}
+\item Suppose the ball drawn had been red instead of blue.  What would be the updated conditional probabilities of each urn?
+\item Suppose a blue ball were drawn, replaced, and then a second blue ball were drawn.  What would be the updated conditional probabilities of each urn?  What about after that had been replaced and a third blue ball had been drawn?
+\item Suppose instead of beginning with a coin flip to pick which urn, it began with a roll of a fair, 6-sided die, where \{1\} selects urn A and \{2,3,4,5,6\} selects urn B.  If a blue ball were chosen, what would be the updated conditional probabilities of each urn?
+\end{enumerate}
+
+
+\item Suppose that China has recently completed a large-scale military exercise simulating an amphibious assault on Taiwan, raising levels of tension in the Taiwan Strait.  The Chinese leadership is considering whether to launch such an assault, which it would like to do if the United States would stay out but would prefer not to if the United States is strongly committed and thus would intervene.  It has a prior belief that there is a 70\% chance the United States is strongly committed.  Suppose also it believes that a strongly committed United States will respond to the military exercise by sending an aircraft carrier fleet with 90\% probability, while a not-strongly committed United States would only send a carrier fleet with 20\% probability.  If no aircraft carriers are sent, what is China's best estimate of the likelihood the U.S. is strongly committed?
+
+
+\end{enumerate}
+
+\vfill
+\begin{center}
+\small{Thanks to Sarah Bouchat, Michael DeCrescenzo, Brad Jones, and Dave Ohls for past years' materials.}
+\end{center}
+
+\end{document}

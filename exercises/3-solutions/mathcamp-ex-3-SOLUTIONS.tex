@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=.8in, bottom=.8in, left=1in, right=1in]{geometry}
+\renewcommand{\rmdefault}{pplx}
+% \usepackage[sc]{mathpazo}
+\usepackage{fourier}
+\usepackage[OT1, euler-hat-accent]{eulervm}
+\usepackage[usenames, dvipsnames, svgnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[small, compact]{titlesec}
+\setitemize[0]{leftmargin=*}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{multicol, multirow}
+\usepackage{epsfig, subfigure, subfloat, graphicx}
+\usepackage{anysize, indentfirst, setspace}
+\usepackage{verbatim, rotating, xfrac}
+\usepackage{gensymb}
+\usepackage{caption, hanging}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+%\parindent 0pt
+%\setdefaultenum{a.}{i.}{A}{1}
+%\setdefaultitem{}{\textperiodcentered}{}{}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{caption, hanging}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds}
+%\setdefaultenum{a.}{1)}{i.}{a.}
+\parindent 0pt
+
+\makeatletter
+\newcommand{\distas}[1]{\mathbin{\overset{#1}{\kern\z@\sim}}}%
+\newsavebox{\mybox}\newsavebox{\mysim}
+\newcommand{\distras}[1]{%
+  \savebox{\mybox}{\hbox{\kern3pt$\scriptstyle#1$\kern3pt}}%
+  \savebox{\mysim}{\hbox{$\sim$}}%
+  \mathbin{\overset{#1}{\kern\z@\resizebox{\wd\mybox}{\ht\mysim}{$\sim$}}}%
+}
+\makeatother
+
+\title{\Large{\bf{\vspace{-100pt}Mathematics for Political Science \vspace{-15pt}}}}
+\author{\large{Exercise Solution 3: Probability}}
+\date{August 21\textsuperscript{st}, 2020}
+\begin{document}
+\maketitle
+
+\hrule
+
+
+\begin{enumerate}
+
+\item 
+$36 * 35 * 5 * 12 * 13 * 6 = 5896800$
+
+
+\item 
+\begin{enumerate}
+\item \{Reagan, Bush31, Dole, Bush43, McCain, Romney, Perot, Nader\}
+\item (graph - all the area outside of the circle around ``Rational Numbers'')
+\item Whole Numbers, Natural Numbers
+\item Natural Numbers
+\item \{1,2,3,4,5,6\}
+\item All the area around ``Whole Numbers'' except for the area representing ``Irrational Numbers''
+\item $\{\emptyset\}$
+\end{enumerate}
+
+
+\item 
+$A \cup A = A$ and $A \cap A = A$.  The intersection or union of any set with itself is itself.
+
+
+\item 
+
+\begin{small}
+\begin{tabular}{c|l}
+  & \\ \hline
+\rule{0cm}{.5cm} 2 & $\frac{1}{16}$ \\
+\rule{0cm}{.5cm} 3 & $\frac{2}{16} = \frac{1}{8}$ \\
+\rule{0cm}{.5cm} 4 & $\frac{3}{16}$ \\
+\rule{0cm}{.5cm} 5 & $\frac{4}{16} = \frac{1}{4}$ \\
+\rule{0cm}{.5cm} 6 & $\frac{3}{16}$ \\
+\rule{0cm}{.5cm} 7 & $\frac{2}{16} = \frac{1}{8}$ \\
+\rule{0cm}{.5cm} 8 & $\frac{1}{16}$ \\
+\end{tabular}
+\end{small}
+
+
+\item 
+\begin{enumerate}
+\item $\left(\frac{1}{2}\right)^6 = \frac{1}{64}$
+\item $\binom{10}{3} \left(\frac{3}{13}\right)^3 \left(\frac{10}{13}\right)^7 \approx .235 $
+\item $1 - \binom{9}{3} \binom{6}{3} \left(\frac{1}{6}\right)^9 \approx .99983 $
+\end{enumerate}
+
+
+
+
+\item 
+\begin{enumerate}
+\item $.53$
+\item $\approx .444$
+\item $\approx .396$
+\item $\approx .333$
+\item $\approx .595$
+\end{enumerate}
+
+
+\item $\frac{2}{11}$
+
+
+\item 
+\begin{enumerate}
+\item $p(A|red) = \frac{1}{7} \approx .143$, $p(B|red) = \frac{6}{7} \approx .857$
+\item $p(A|blue,blue) \approx .835$, $p(B|blue,blue)  \approx .165$ \\   $p(A|blue,blue, blue) \approx .919$, $p(B|blue,blue)  \approx .081$.
+\item $p(A|red) = \approx .310$
+\end{enumerate}
+
+
+\item $\frac{7}{31} \approx .226$
+
+
+\end{enumerate}
+
+\vfill
+\begin{center}
+\small{Thanks to Sarah Bouchat, Michael DeCrescenzo, Brad Jones, and Dave Ohls for past years' materials.}
+\end{center}
+
+\end{document}
+
+
+
